@@ -1,148 +1,152 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.TreeSet;
-import java.util.HashSet;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        addToArrayList();
-        addToLinkedList();
-        addingElements();
-        searchElemen();
-        deletingElement();
-    }
+        int numElements = 500000;
 
-    public static void addToArrayList() {
-        ArrayList<Integer> arrayList = new ArrayList<>();
+        // Создаем коллекции
+        List<Integer> arrayList = new ArrayList<>();
+        List<Integer> linkedList = new LinkedList<>();
+        Set<Integer> hashSet = new HashSet<>();
+        Set<Integer> treeSet = new TreeSet<>();
 
+        // Замеряем время добавления в ArrayList
         long startTime = System.nanoTime();
-        for (int i = 0; i < 500_000; i++) {
+        for (int i = 0; i < numElements; i++) {
             arrayList.add(i);
         }
         long endTime = System.nanoTime();
+        long arrayListAddTime = endTime - startTime; // Преобразовать в миллисекунды
 
-        long duration = (endTime - startTime) / 1000_000; // Преобразовать в миллисекунды
-        System.out.println("Добавление 500 000 элементов в ArrayList заняло " + duration + " ms");
-    }
-
-    public static void addToLinkedList() {
-        LinkedList<Integer> linkedList = new LinkedList<>();
-
-        long startTime = System.nanoTime();
-        for (int i = 0; i < 500000; i++) {
+        // Замеряем время добавления в LinkedList
+        startTime = System.nanoTime();
+        for (int i = 0; i < numElements; i++) {
             linkedList.add(i);
         }
-        long endTime = System.nanoTime();
-
-        long duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Добавление 500 000 элементов в LinkedList заняло " + duration + " ms");
-    }
-
-    public static void addingElements() {
-        LinkedList<Integer> linkedList = new LinkedList<>();
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        TreeSet<Integer> treeSet = new TreeSet<>();
-        HashSet<Integer> hashSet = new HashSet<>();
-        int targetElement = 250000;
-
-        // Добавление элементов в LinkedList
-        long startTime = System.nanoTime();
-        linkedList.add(targetElement);
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Добавление элемента в LinkedList заняло " + duration + " ms");
-
-        // Добавление элементов в ArrayList
-        startTime = System.nanoTime();
-        arrayList.add(targetElement);
         endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Добавление элемента в ArrayList заняло " + duration + " ms");
+        long linkedListAddTime = endTime - startTime; // Преобразовать в миллисекунды
 
-        // Добавление элементов в TreeSet
+        // Замеряем время добавления в HashSet
         startTime = System.nanoTime();
-        treeSet.add(targetElement);
+        for (int i = 0; i < numElements; i++) {
+            hashSet.add(i);
+        }
         endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Добавление элемента в TreeSet заняло " + duration + " ms");
+        long hashSetAddTime = endTime - startTime; // Преобразовать в миллисекунды
 
-        // Добавление элементов в HashSet
+        // Замеряем время добавления в TreeSet
         startTime = System.nanoTime();
-        hashSet.add(targetElement);
+        for (int i = 0; i < numElements; i++) {
+            treeSet.add(i);
+        }
         endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Добавление элемента в HashSet заняло " + duration + " ms");
-    }
+        long treeSetAddTime = endTime - startTime; // Преобразовать в миллисекунды
 
-    public static void searchElemen() {
-        LinkedList<Integer> linkedList = new LinkedList<>();
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        TreeSet<Integer> treeSet = new TreeSet<>();
-        HashSet<Integer> hashSet = new HashSet<>();
-        int targetElement = 250000;
+        System.out.println("Время добавления элементов:");
+        System.out.println();
+        System.out.println("Добавление элемента в ArrayList заняло " + arrayListAddTime + " ns");
+        System.out.println("Добавление элемента в LinkedList заняло " + linkedListAddTime + " ns");
+        System.out.println("Добавление элемента в HashSet заняло " + hashSetAddTime + " ns");
+        System.out.println("Добавление элемента в TreeSet заняло " + treeSetAddTime + " ns");
 
-        // Поиск элемента в LinkedList
-        long startTime = System.nanoTime();
-        linkedList.contains(targetElement);
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Поиск элемента в LinkedList занял " + duration + " ms");
+        if (arrayListAddTime < linkedListAddTime && arrayListAddTime < hashSetAddTime && arrayListAddTime < treeSetAddTime) {
+            System.out.println("ArrayList работает быстрее.");
+        } else if (linkedListAddTime < arrayListAddTime && linkedListAddTime < hashSetAddTime && linkedListAddTime < treeSetAddTime) {
+            System.out.println("LinkedList работает быстрее.");
+        } else if (hashSetAddTime < arrayListAddTime && hashSetAddTime < linkedListAddTime && hashSetAddTime < treeSetAddTime) {
+            System.out.println("HashSet работает быстрее.");
+        } else if (treeSetAddTime < arrayListAddTime && treeSetAddTime < linkedListAddTime && treeSetAddTime < hashSetAddTime) {
+            System.out.println("TreeSet работает быстрее.");
+        } else {
+            System.out.println("ArrayList, LinkedList, HashSet, TreeSet - имеют одинаковое время выполнения.");
+        }
+        System.out.println();
 
-        // Поиск элемента в ArrayList
+        // Замеряем время поиска элемента в ArrayList
         startTime = System.nanoTime();
-        arrayList.contains(targetElement);
+        arrayList.contains(numElements - 1);
         endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Поиск элемента в ArrayList занял " + duration + " ms");
+        long arrayListSearchTime = endTime - startTime; // Преобразовать в миллисекунды
 
-        // Поиск элемента в TreeSet
+        // Замеряем время поиска элемента в LinkedList
         startTime = System.nanoTime();
-        treeSet.contains(targetElement);
+        linkedList.contains(numElements - 1);
         endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Поиск элемента в TreeSet занял " + duration + " ms");
+        long linkedListSearchTime = endTime - startTime; // Преобразовать в миллисекунды
 
-        // Поиск элемента в HashSet
+        // Замеряем время поиска элемента в HashSet
         startTime = System.nanoTime();
-        hashSet.contains(targetElement);
+        hashSet.contains(numElements - 1);
         endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Поиск элемента в HashSet занял " + duration + " ms");
-    }
+        long hashSetSearchTime = endTime - startTime; // Преобразовать в миллисекунды
 
-    public static void deletingElement() {
-        LinkedList<Integer> linkedList = new LinkedList<>();
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        TreeSet<Integer> treeSet = new TreeSet<>();
-        HashSet<Integer> hashSet = new HashSet<>();
-        int targetElement = 250000;
-
-        // Удаление элемента из LinkedList
-        long startTime = System.nanoTime();
-        linkedList.remove(targetElement);
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Удаление элемента из LinkedList заняло " + duration + " ms");
-
-        // Удаление элемента из ArrayList
+        // Замеряем время поиска элемента в TreeSet
         startTime = System.nanoTime();
-        arrayList.remove((Integer) targetElement);
+        treeSet.contains(numElements - 1);
         endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Удаление элемента из ArrayList заняло " + duration + " ms");
+        long treeSetSearchTime = endTime - startTime; // Преобразовать в миллисекунды
 
-        // Удаление элемента из TreeSet
-        startTime = System.nanoTime();
-        treeSet.remove(targetElement);
-        endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Удаление элемента из TreeSet заняло " + duration + " ms");
+        System.out.println("Время поиска элемента:");
+        System.out.println();
+        System.out.println("Поиск элемента в ArrayList занял " + arrayListSearchTime + " ns");
+        System.out.println("Поиск элемента в LinkedList занял " + linkedListSearchTime + " ns");
+        System.out.println("Поиск элемента в HashSet занял " + hashSetSearchTime + " ns");
+        System.out.println("Поиск элемента в TreeSet занял " + treeSetSearchTime + " ns");
 
-        // Удаление элемента из HashSet
+        if (arrayListSearchTime < linkedListSearchTime && arrayListSearchTime < hashSetSearchTime && arrayListSearchTime < treeSetSearchTime) {
+            System.out.println("ArrayList работает быстрее.");
+        } else if (linkedListSearchTime < arrayListSearchTime && linkedListSearchTime < hashSetSearchTime && linkedListSearchTime < treeSetSearchTime) {
+            System.out.println("LinkedList работает быстрее.");
+        } else if (hashSetSearchTime < arrayListSearchTime && hashSetSearchTime < linkedListSearchTime && hashSetSearchTime < treeSetSearchTime) {
+            System.out.println("HashSet работает быстрее.");
+        } else if (treeSetSearchTime < arrayListSearchTime && treeSetSearchTime < linkedListSearchTime && treeSetSearchTime < hashSetSearchTime) {
+            System.out.println("TreeSet работает быстрее.");
+        } else {
+            System.out.println("ArrayList, LinkedList, HashSet, TreeSet - имеют одинаковое время выполнения.");
+        }
+        System.out.println();
+
+        // Замеряем время удаления элемента из ArrayList
         startTime = System.nanoTime();
-        hashSet.remove(targetElement);
+        arrayList.remove(numElements - 1);
         endTime = System.nanoTime();
-        duration = (endTime - startTime) / 1000000; // Преобразовать в миллисекунды
-        System.out.println("Удаление элемента из HashSet заняло " + duration + " ms");
+        long arrayListRemoveTime = endTime - startTime; // Преобразовать в миллисекунды
+
+        // Замеряем время удаления элемента из LinkedList
+        startTime = System.nanoTime();
+        linkedList.remove(numElements - 1);
+        endTime = System.nanoTime();
+        long linkedListRemoveTime = endTime - startTime; // Преобразовать в миллисекунды
+
+        // Замеряем время удаления элемента из HashSet
+        startTime = System.nanoTime();
+        hashSet.remove(numElements - 1);
+        endTime = System.nanoTime();
+        long hashSetRemoveTime = endTime - startTime; // Преобразовать в миллисекунды
+
+        // Замеряем время удаления элемента из TreeSet
+        startTime = System.nanoTime();
+        treeSet.remove(numElements - 1);
+        endTime = System.nanoTime();
+        long treeSetRemoveTime = endTime - startTime; // Преобразовать в миллисекунды
+
+        System.out.println("Время удаления элемента:");
+        System.out.println();
+        System.out.println("Удаление элемента из ArrayList заняло " + arrayListRemoveTime + " ns");
+        System.out.println("Удаление элемента из LinkedList заняло " + linkedListRemoveTime + " ns");
+        System.out.println("Удаление элемента из HashSet заняло " + hashSetRemoveTime + " ns");
+        System.out.println("Удаление элемента из TreeSet заняло " + treeSetRemoveTime + " ns");
+
+        if (arrayListRemoveTime < linkedListRemoveTime && arrayListRemoveTime < hashSetRemoveTime && arrayListRemoveTime < treeSetRemoveTime) {
+            System.out.println("ArrayList работает быстрее.");
+        } else if (linkedListRemoveTime < arrayListRemoveTime && linkedListRemoveTime < hashSetRemoveTime && linkedListRemoveTime < treeSetRemoveTime) {
+            System.out.println("LinkedList работает быстрее.");
+        } else if (hashSetRemoveTime < arrayListRemoveTime && hashSetRemoveTime < linkedListRemoveTime && hashSetRemoveTime < treeSetRemoveTime) {
+            System.out.println("HashSet работает быстрее.");
+        } else if (treeSetRemoveTime < arrayListRemoveTime && treeSetRemoveTime < linkedListRemoveTime && treeSetRemoveTime < hashSetRemoveTime) {
+            System.out.println("TreeSet работает быстрее.");
+        } else {
+            System.out.println("ArrayList, LinkedList, HashSet, TreeSet - имеют одинаковое время выполнения.");
+        }
     }
 }
